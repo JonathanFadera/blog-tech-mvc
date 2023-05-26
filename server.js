@@ -19,7 +19,7 @@ const sess = {
     // half an hour
     maxAge: 0.5 * 60 * 60 * 1000
   },
-  resave: false,
+  resave: true,
   saveUninitialized: true,
   store: new SequelizeStore({
     db: sequelize
