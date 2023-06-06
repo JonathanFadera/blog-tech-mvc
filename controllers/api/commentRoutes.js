@@ -1,81 +1,97 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const {User, Blog, Comment} = require("../../models");
+const { validationResult } = require('express-validator');
+const { User, Blog, Comment } = require('../../models');
 
-router.get("/", (req, res) => {
-    Comment.findAll({include:[User, Blog]})
-      .then(dbComments => {
-        res.json(dbComments);
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(500).json({ msg: "an error occured", err });
-      });
-  });
-
-router.get("/:id", (req, res) => {
-    Comment.findByPk(req.params.id,{include:[User, Blog]})
-      .then(dbComment => {
-        res.json(dbComment);
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(500).json({ msg: "an error occured", err });
-      });
+// GET all comments and include user and blog data
+router.get('/', (req, res) => {
+  Comment.findAll({
+    include: [User, Blog],
+  })
+    .then((dbCommentData) => res.json({ data: dbCommentData }))
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ error: 'Something went wrong' });
+    });
 });
 
-router.post("/", (req, res) => {
-    if(!req.session.user){
-      return res.status(401).json({msg:"Please login first!"})
+// GET a single comment
+router.get('/:id', (req, res) => {
+  Comment.findByPk(req.params.id, { include: [User, Blog] })
+    .then((dbCommentData) => {
+      if (!dbCommentData) {
+        return res.status(404).json({ error: 'Comment not found' });
+      }
+      res.json({ data: dbCommentData });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ error: 'Something went wrong' });
+    });
+});
+
+// CREATE a new comment
+router.post('/', (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
   }
-    Comment.create({
-      body:req.body.body,
-      userId:req.session.user.id,
-      blogId:req.body.blogId
-    })
-      .then(newComment => {
-        res.json(newComment);
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(500).json({ msg: "an error occured", err });
-      });
-});
 
-router.put("/:id", (req, res) => {
-    if(!req.session.user){
-        return res.status(401).json({msg:"Please login first!"})
-    }
-      // TODO: Ensure user updating is original author
-    Comment.update(req.body, {
-      where: {
-        id: req.params.id
-      }
-    }).then(updatedComment => {
-      res.json(updatedComment);
+  Comment.create({
+    comment_text: req.body.comment_text,
+    user_id: req.session.user.id,
+    blog_id: req.body.blog_id,
+  })
+    .then((newCommentData) => {
+      res.json({ data: newCommentData });
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
-      res.status(500).json({ msg: "an error occured", err });
+      res.status(500).json({ error: 'Something went wrong' });
     });
 });
 
-router.delete("/:id", (req, res) => {
-    if(!req.session.user){
-        return res.status(401).json({msg:"Please login first!"})
-    }
-      // TODO: Ensure user deleting is original author
-    Comment.destroy({
-      where: {
-        id: req.params.id
+// UPDATE a comment
+router.put('/:id', (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  Comment.update(req.body, {
+    where: {
+      id: req.params.id,
+    },
+  })
+    .then((updatedCommentData) => {
+      if (!updatedCommentData[0]) {
+        return res.status(404).json({ error: 'Comment not found' });
       }
-    }).then(delComment => {
-      res.json(delComment);
+      res.json({ data: updatedCommentData });
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
-      res.status(500).json({ msg: "an error occured", err });
+      res.status(500).json({ error: 'Something went wrong' });
     });
 });
-  
+
+// DELETE a comment
+router.delete('/:id', (req, res) => {
+  Comment.destroy({
+    where: {
+      id: req.params.id,
+    },
+  })
+    .then((deletedCommentData) => {
+      if (!deletedCommentData) {
+        return res.status(404).json({ error: 'Comment not found' });
+      }
+      res.json({ data: deletedCommentData });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ error: 'Something went wrong' });
+    });
+});
+
 module.exports = router;
