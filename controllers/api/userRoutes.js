@@ -1,132 +1,113 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { validationResult } = require('express-validator');
-const { User, Blog, Comment } = require('../../models');
-const bcrypt = require('bcrypt');
+const {User, Blog, Comment} = require("../../models/");
+const bcrypt  = require("bcrypt");
 
-// GET all users
-router.get('/', (req, res) => {
-  User.findAll({
-    attributes: { exclude: ['password'] },
-  })
-    .then((dbUserData) => res.json({ data: dbUserData }))
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ error: 'Something went wrong' });
-    });
-});
-
-// Logout by hitting /api/users/logout
-router.get('/logout', (req, res) => {
-  req.session.destroy();
-  res.redirect('/');
-});
-
-// GET a single user
-router.get('/:id', (req, res) => {
-  User.findByPk(req.params.id, { include: [Blog, Comment] })
-    .then((dbUserData) => {
-      if (!dbUserData) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-      res.json({ data: dbUserData });
+router.get("/", (req, res) => {
+    User.findAll({
+      include:[Blog, Comment]
     })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ error: 'Something went wrong' });
-    });
+      .then(dbUsers => {
+        res.json(dbUsers);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({ msg: "an error occured", err });
+      });
+  });
+
+  // logout by hitting /api/users/logout
+router.get("/logout",(req,res)=>{
+    req.session.destroy();
+    res.redirect('/');
+})
+
+router.get("/:id", (req, res) => {
+    User.findByPk(req.params.id,{include:[Blog, Comment]})
+      .then(dbUser => {
+        res.json(dbUser);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({ msg: "an error occured", err });
+      });
 });
 
-// CREATE a user
-router.post('/', (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
-  User.create({
-    username: req.body.username,
-    password: req.body.password,
-  })
-    .then((newUserData) => {
-      req.session.user = {
-        id: newUserData.id,
-        username: newUserData.username,
-        loggedIn: true,
-      };
-      res.json({ data: newUserData });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ error: 'Something went wrong' });
-    });
-});
-
-// Login by hitting /api/users/login
-router.post('/login', (req, res) => {
-  User.findOne({
-    where: {
-      username: req.body.username,
-    },
-  })
-    .then((foundUserData) => {
-      if (!foundUserData) {
-        return res.status(400).json({ error: 'No user account found' });
-      }
-
-      if (bcrypt.compareSync(req.body.password, foundUserData.password)) {
+// sign up api/users/
+router.post("/", (req, res) => {
+  // run hooks to hash and salt password; create user
+    User.create(req.body, {individualHooks: true} )
+      .then(newUser => {
+        // IMMEDIATE LOG IN = create new session for user with id and username (sessions set to 30 min)
         req.session.user = {
-          id: foundUserData.id,
-          username: foundUserData.username,
-          loggedIn: true,
-        };
-        return res.json({ data: foundUserData });
+          id:newUser.id,
+          username:newUser.username
+        }
+        res.json(newUser);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({ msg: "an error occured", err });
+      });
+});
+
+// login api/users/login
+router.post("/login", (req, res) => {
+  // find username name that matches request
+    User.findOne({
+      where:{
+      username:req.body.username
+    }
+}).then(foundUser=>{
+  // if username is not found, send message
+      if(!foundUser){
+        return res.status(400).json({msg:"wrong login credentials"})
+      }
+      // compare password with saved hash
+      if(bcrypt.compareSync(req.body.password,foundUser.password)){
+        // if pw matches, create session for user 
+        req.session.user = {
+          id:foundUser.id,
+          username:foundUser.username
+        }
+        return res.json(foundUser)
+        // redirect page??
       } else {
-        return res.status(400).json({ error: 'Incorrect password' });
+        return res.status(400).json({msg:"wrong login credentials"})
       }
+    }).catch(err => {
+        console.log(err);
+        res.status(500).json({ msg: "an error occured", err });
+      });
+});
+  
+router.put("/:id", (req, res) => {
+    User.update(req.body, {
+      where: {
+        id: req.params.id
+      },
+      individualHooks: true
+    }).then(updatedUser => {
+      res.json(updatedUser);
     })
-    .catch((err) => {
+    .catch(err => {
       console.log(err);
-      res.status(500).json({ error: 'Something went wrong' });
+      res.status(500).json({ msg: "an error occured", err });
     });
 });
-
-// UPDATE a user
-router.put('/:id', (req, res) => {
-  User.update(req.body, {
-    where: {
-      id: req.params.id,
-    },
-  })
-    .then((updatedUserData) => {
-      if (!updatedUserData[0]) {
-        return res.status(404).json({ error: 'No user found with this id' });
+  
+router.delete("/:id", (req, res) => {
+    User.destroy({
+      where: {
+        id: req.params.id
       }
-      res.json({ data: updatedUserData });
+    }).then(delUser => {
+      res.json(delUser);
     })
-    .catch((err) => {
+    .catch(err => {
       console.log(err);
-      res.status(500).json({ error: 'Something went wrong' });
+      res.status(500).json({ msg: "an error occured", err });
     });
-});
-
-// DELETE a user
-router.delete('/:id', (req, res) => {
-  User.destroy({
-    where: {
-      id: req.params.id,
-    },
-  })
-    .then((deletedUserData) => {
-      if (!deletedUserData) {
-        return res.status(404).json({ error: 'No user found with this id' });
-      }
-      res.json({ data: deletedUserData });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ error: 'Something went wrong' });
-    });
-});
+  });
 
 module.exports = router;

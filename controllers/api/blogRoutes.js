@@ -1,94 +1,88 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { User, Blog, Comment } = require('../../models');
-const withAuth = require('../../utils/auth.js');
-const { validationResult } = require('express-validator');
+const {User, Blog, Comment} = require("../../models");
+const withAuth = require('../../util/auth.js')
 
-// GET all blogs and include user and comment data
-router.get('/', (req, res) => {
-  Blog.findAll({
-    include: [User, Comment],
-  })
-    .then((dbBlogData) => res.json({ data: dbBlogData }))
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ error: 'Something went wrong' });
-    });
+// get all blogs and associated users/comments
+router.get("/", (req, res) => {
+    Blog.findAll({include:[User, Comment]})
+      .then(dbBlogs => {
+        res.json(dbBlogs);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({ msg: "an error occured", err });
+      });
+  });
+
+  // get one blog with associated user and comment
+router.get("/:id", (req, res) => {
+    Blog.findByPk(req.params.id,{include:[User, Comment]})
+      .then(dbBlog => {
+        res.json(dbBlog);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({ msg: "an error occured", err });
+      });
 });
 
-// GET a single blog by id and include user and comment data
-router.get('/:id', (req, res) => {
-  Blog.findByPk(req.params.id, { include: [User, Comment] })
-    .then((dbBlogData) => {
-      if (!dbBlogData) {
-        return res.status(404).json({ error: 'Blog not found' });
-      }
-      res.json({ data: dbBlogData });
+// create new blog post
+router.post("/", (req, res) => {
+  // check for logged in user
+  // if no user in session, send messsage
+    if(!req.session.user){
+      return res.status(401).json({msg:"Please login!"})
+    }
+    // create blog post with title and content input by user; user id from session data
+    Blog.create({
+      title:req.body.title,
+      content:req.body.content,
+      userId:req.session.user.id
     })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ error: 'Something went wrong' });
-    });
+    // date is "createdAt"
+      .then(newBlog => {
+        res.json(newBlog);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({ msg: "an error occured", err });
+      });
 });
 
-// CREATE a new blog
-router.post('/', withAuth, (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+// update post - withAuth fx 
+router.put("/:id", (req, res) => {
+  if(!req.session.user){
+    return res.status(401).json({msg:"Please login!"})
   }
-
-  Blog.create({
-    title: req.body.title,
-    content: req.body.content,
-    user_id: req.session.user.id,
-  })
-    .then((newBlogData) => {
-      res.json({ data: newBlogData });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ error: 'Something went wrong' });
-    });
-});
-
-// UPDATE a blog by id withAuth middleware
-router.put('/:id', withAuth, (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
   Blog.update(req.body, {
-    where: { id: req.params.id },
-  })
-    .then((updatedBlogData) => {
-      if (updatedBlogData[0] === 0) {
-        return res.status(404).json({ error: 'Blog not found' });
+      where: {
+        id: req.params.id
       }
-      res.json({ data: updatedBlogData });
+    }).then(updatedBlog => {
+      res.json(updatedBlog);
     })
-    .catch((err) => {
+    .catch(err => {
       console.log(err);
-      res.status(500).json({ error: 'Something went wrong' });
+      res.status(500).json({ msg: "an error occured", err });
     });
 });
 
-// DELETE a blog by id withAuth middleware
-router.delete('/:id', withAuth, (req, res) => {
-  Blog.destroy({
-    where: { id: req.params.id },
-  })
-    .then((deletedBlogData) => {
-      if (deletedBlogData === 0) {
-        return res.status(404).json({ error: 'Blog not found' });
+router.delete("/:id", (req, res) => {
+  if(!req.session.user){
+    return res.status(401).json({msg:"Please login!"})
+  }
+    Blog.destroy({
+      where: {
+        id: req.params.id
       }
-      res.json({ data: deletedBlogData });
+    }).then(delBlog => {
+      res.json(delBlog);
     })
-    .catch((err) => {
+    .catch(err => {
       console.log(err);
-      res.status(500).json({ error: 'Something went wrong' });
+      res.status(500).json({ msg: "an error occured", err });
     });
 });
-
+  
 module.exports = router;
