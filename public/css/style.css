@@ -1,44 +1,57 @@
 * {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
 body {
   height: 100vh;
-  background-color: azure;
+  background-color: #f6f6f6;
+  font-family: Arial, sans-serif;
 }
 
-header, h1 {
-  background-color: #355C7D;
+header,
+h1 {
+  background-color: #8bd3dd;
   padding: 10px;
-  color: white !important;
+  color: #fff;
 }
 
 header a {
   margin: 10px;
   padding: 5px;
-  color: white !important;
+  color: #fff;
+  text-decoration: none;
 }
 
 .card-title {
-  background-color: #355C7D;
-  color: white;
+  background-color: #8bd3dd;
+  color: #fff;
   padding: 5px;
 }
 
 .card {
-  background-color: azure;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin-bottom: 20px;
 }
 
-.card h5, .card p {
-  color: black;
+.card h5,
+.card p {
+  color: #333;
   font-style: normal;
 }
 
 button {
-  padding: 3px;
+  padding: 8px 12px;
   margin: 5px;
+  background-color: #8bd3dd;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 #newpost {
@@ -47,22 +60,28 @@ button {
   margin-top: 20px;
 }
 
-#content, #editedContent {
-  margin-left: 10vw;
-  margin-right: 10vw;
+#content,
+#editedContent {
+  margin: 0 auto;
+  max-width: 800px;
 }
 
-#create, #update, #delete {
-  margin-left: 30vw;
-  margin-right: 30vw;
+#create,
+#update,
+#delete {
+  margin: 0 auto;
+  max-width: 600px;
   margin-top: 20px;
 }
 
 #comment {
-width: 80vw;
-margin-top:20px;
+  width: 100%;
+  max-width: 800px;
+  margin: 20px auto;
 }
 
-#title, #editedTitle {
-  width: 80vw;
+#title,
+#editedTitle {
+  width: 100%;
+  max-width: 800px;
 }
