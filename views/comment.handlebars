@@ -1,7 +1,7 @@
 <h1>The Tech Blog</h1>
 <section id="currentBlogComment">
     <section class="card">
-        {{!-- <div class="card-body"> --}}
+        <div class="card-body">
             <h3 class="card-title">{{hbsBlog.title}}</h3>
             <h5>Posted by {{hbsblog.user.username}} on {{hbsBlog.createdAt}}</h5>
             <p class="card-text">{{hbsBlog.content}}</p>
@@ -9,7 +9,7 @@
     </section>
     {{#each hbsBlog.comments}}
     <section class="card">
-        {{!-- <div class="card-body"> --}}
+        <div class="card-body">
             <p>Comment</p>
             <p class="card-text">{{body}}</p>
         </div>
@@ -17,7 +17,7 @@
 {{/each}}
 </section>
 <section class="card text-center">
-    {{!-- <div class="card-body"> --}}
+    <div class="card-body">
         <h3 class="card-title">Comment</h3>
         <form id="newComment">
             <div class="class-text"></div>
@@ -29,5 +29,5 @@
     </div>
 </section>
 
-<script src="../public/js/comment.js"></script>
+<script src="/js/comment.js"></script>
 ```
