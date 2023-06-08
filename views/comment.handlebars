@@ -6,15 +6,12 @@
             <h5>Posted by {{hbsblog.user.username}} on {{hbsBlog.createdAt}}</h5>
             <p class="card-text">{{hbsBlog.content}}</p>
         </div>
-    </section>
-    {{#each hbsBlog.comments}}
-    <section class="card">
+    </section> {{#each hbsBlog.comments}} <section class="card">
         <div class="card-body">
             <p>Comment</p>
             <p class="card-text">{{body}}</p>
         </div>
-</section>
-{{/each}}
+    </section> {{/each}}
 </section>
 <section class="card text-center">
     <div class="card-body">
@@ -23,11 +20,9 @@
             <div class="class-text"></div>
             <input id="hiddenCommentId" hidden="true" value="{{hbsBlog.id}}"></input>
             <textarea id="comment" class="form-control" rows="3" placeholder="Comment"></textarea>
-            </div>
-            <button id="create">Submit</button>
-        </form>
+    </div>
+    <button id="create">Submit</button>
+    </form>
     </div>
 </section>
-
-<script src="/js/comment.js"></script>
-```
+<script src="/js/comment.js"></script> ```
