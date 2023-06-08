@@ -1,6 +1,6 @@
 var existingBlogs = document.querySelector("#existingblogs");
 var createNew = document.querySelector("#createNew");
-var newBlog = document.querySelector("#newBlog");
+var newPost = document.querySelector("#newPost");
 
 function hideCreateNew() {
   createNew.hidden = true;
@@ -8,18 +8,19 @@ function hideCreateNew() {
 
 hideCreateNew();
 
-document.querySelector("#newPost").addEventListener("submit", event => {
+newPost.addEventListener("submit", event => {
   event.preventDefault();
   console.log("click");
   existingBlogs.hidden = false;
-  document.querySelector("#newPost").hidden = true;
+  newPost.hidden = true;
   createNew.hidden = false;
 });
 
-newBlog.addEventListener("submit", event => {
+var newBlogForm = document.querySelector("#newBlog");
+newBlogForm.addEventListener("submit", event => {
+  event.preventDefault();
   var title = document.querySelector("#title").value;
   var content = document.querySelector("#content").value;
-  event.preventDefault();
   console.log("You clicked the new blog button");
   if (!title || !content) {
     alert("Please enter a title and content");
@@ -43,5 +44,9 @@ newBlog.addEventListener("submit", event => {
       } else {
         alert("Something went wrong");
       }
+    })
+    .catch(err => {
+      console.log(err);
+      alert("Something went wrong");
     });
 });
