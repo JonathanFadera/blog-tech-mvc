@@ -1,9 +1,9 @@
-var existingBlogs = document.querySelector("#existingblogs");
+var existingBlogs = document.querySelector("#existingBlogs");
 var createNew = document.querySelector("#createNew");
 var newPost = document.querySelector("#newPost");
 
 function hideCreateNew() {
-  createNew.hidden = true;
+  createNew.hidden = false;
 }
 
 hideCreateNew();
@@ -12,7 +12,7 @@ newPost.addEventListener("submit", event => {
   event.preventDefault();
   console.log("click");
   existingBlogs.hidden = false;
-  newPost.hidden = true;
+  newPost.hidden = false;
   createNew.hidden = false;
 });
 
