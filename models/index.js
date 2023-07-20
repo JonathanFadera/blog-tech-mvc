@@ -1,15 +1,34 @@
-const User = require('./User');
-const Blog = require('./Blog');
+const Author = require('./Author');
+const BlogPost = require('./BlogPost');
 const Comment = require('./Comment');
 
-// User can have many blogs
-User.hasMany(Blog,);
-Blog.belongsTo(User);
+Author.hasMany(BlogPost, {
+  foreignKey: 'author_id',
+  onDelete: 'CASCADE'
+});
 
-Blog.hasMany(Comment);
-Comment.belongsTo(Blog);
+BlogPost.belongsTo(Author, {
+  foreignKey: 'author_id'
+});
 
-User.hasMany(Comment);
-Comment.belongsTo(User);
 
-module.exports = { User, Blog, Comment };
+BlogPost.hasMany(Comment, {
+    foreignKey: 'blog_id',
+    onDelete: 'CASCADE'
+});
+
+Comment.belongsTo(BlogPost, {
+    foreignKey: 'blog_id'
+})
+
+
+Author.hasMany(Comment, {
+  foreignKey: 'author_id'
+});
+
+Comment.belongsTo(Author, {
+  foreignKey: 'author_id'
+});
+
+
+module.exports = { Author, BlogPost, Comment };

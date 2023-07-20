@@ -1,23 +1,27 @@
-document.querySelector("#login").addEventListener("submit", event => {
+const loginFormHandler = async (event) => {
     event.preventDefault();
-    const userObj = {
-        username: document.querySelector("#loginUsername").value,
-        password: document.querySelector("#loginPassword").value,
-    };
-
-    console.log(userObj);
-    fetch("/api/users/login", {
-        method: "POST",
-        body: JSON.stringify(userObj),
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }).then(res => {
-        if (res.ok) {
-            console.log("User logged in");
-            location.href = "/dashboard";
-        } else {
-            alert("Incorrect username or password");
-        }
-    });
-});
+  
+    // Collect values from the login form
+    const email = document.querySelector('#email-login').value.trim();
+    const password = document.querySelector('#password-login').value.trim();
+  
+    if (email && password) {
+      // Send a POST request to the API endpoint
+      const response = await fetch('/api/author/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+  
+      if (response.ok) {
+        // If successful, redirect the browser to the dashboard page
+        document.location.replace('/dashboard');
+      } else {
+        alert(response.statusText);
+      }
+    }
+  };
+  
+  document
+    .querySelector('.login-form')
+    .addEventListener('submit', loginFormHandler);

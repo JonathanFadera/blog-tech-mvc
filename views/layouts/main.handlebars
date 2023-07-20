@@ -1,25 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Tech Blog</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css"> 
-            {{!--<link rel="stylesheet" type="text/css" href="/public/css/style.css"> --}}
-    </head>
-    <body>
-        <header id="navheader" class="text-white">
-                {{#if loggedIn}}
-            <a href="/">Home</a>
-            <a href="/dashboard">Dashboard</a>
-            <a href="/api/users/logout">Logout</a>
-                {{else}}
-            <a href="/">Home</a>
-            <a href="/dashboard">Dashboard</a>
-            <a href="/login">Login</a>
-                {{/if}}
-        </header>
-        <main> {{{body}}} </main>
-    </body>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tech Blog</title>
+  <link rel="stylesheet" href="/css/jass.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<!-- Our STATIC HTML displayed on every page -->
+<body class="site">
+    
+    <header class="display-flex justify-space-between align-center p-4 bg-primary jumbotron">
+      <h1 class="text-white bg-dark">The Tech Blog</h1>
+      <nav>
+        <a class="mr-5" href="/">Home</a>
+        <!-- Conditionally render login or logout links -->
+        {{#if logged_in}}
+        <a class="mr-5" href="/dashboard">Dashboard</a> |
+        <a class="mr-5" id="logout" href="#">Logout</a>
+        {{else}}
+        <a class="mr-5" href="/login">Login</a>
+        {{/if}}
+      </nav>
+    </header>
+
+    <main class="outer-container site-content">
+      <!-- Render the sub layout -->
+      {{{ body }}}
+    </main>
+
+    <footer class="jumbotron footer"></footer>
+
+  <!-- Render logout script for logged in users only -->
+  {{#if logged_in}}
+    <script src="/js/logout.js"></script>
+  {{/if}}
+</body>
+
 </html>

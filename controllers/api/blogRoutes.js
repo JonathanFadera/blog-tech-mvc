@@ -1,94 +1,104 @@
-const express = require('express');
-const router = express.Router();
-const { User, Blog, Comment } = require('../../models');
-const withAuth = require('../../utils/auth.js');
-const { validationResult } = require('express-validator');
+const router = require('express').Router();
+const { BlogPost, Comment } = require('../../models');
+const withAuth = require('../../utils/auth');
 
-// GET all blogs and include user and comment data
-router.get('/', (req, res) => {
-  Blog.findAll({
-    include: [User, Comment],
-  })
-    .then((dbBlogData) => res.json({ data: dbBlogData }))
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ error: 'Something went wrong' });
-    });
+// /api/blog/
+
+router.get('/', withAuth, async (req, res) => {
+  // If the user is logged in, render the create blog page
+    res.render('createblogpost', {logged_in: true});  
+    return;
 });
 
-// GET a single blog by id and include user and comment data
-router.get('/:id', (req, res) => {
-  Blog.findByPk(req.params.id, { include: [User, Comment] })
-    .then((dbBlogData) => {
-      if (!dbBlogData) {
-        return res.status(404).json({ error: 'Blog not found' });
-      }
-      res.json({ data: dbBlogData });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ error: 'Something went wrong' });
+router.post('/', withAuth, async (req, res) => {
+  try {
+    const newBlogPost = await BlogPost.create({
+      ...req.body,
+      author_id: req.session.user_id,
     });
-});
 
-// CREATE a new blog
-router.post('/', withAuth, (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    res.status(200).json(newBlogPost);
+  } catch (err) {
+    res.status(400).json(err);
   }
-
-  Blog.create({
-    title: req.body.title,
-    content: req.body.content,
-    user_id: req.session.user.id,
-  })
-    .then((newBlogData) => {
-      res.json({ data: newBlogData });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ error: 'Something went wrong' });
-    });
 });
 
-// UPDATE a blog by id withAuth middleware
-router.put('/:id', withAuth, (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+router.post('/:id/comment/', withAuth, async (req, res) => {
+  try {
+    const newComment = await Comment.create({
+      comment_content: req.body.comment_content,
+      blog_id: req.params.id,
+      author_id: req.session.user_id,
+    });
+
+    res.status(200).json(newComment);
+  } catch (err) {
+    res.status(400).json(err);
   }
-
-  Blog.update(req.body, {
-    where: { id: req.params.id },
-  })
-    .then((updatedBlogData) => {
-      if (updatedBlogData[0] === 0) {
-        return res.status(404).json({ error: 'Blog not found' });
-      }
-      res.json({ data: updatedBlogData });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ error: 'Something went wrong' });
-    });
 });
 
-// DELETE a blog by id withAuth middleware
-router.delete('/:id', withAuth, (req, res) => {
-  Blog.destroy({
-    where: { id: req.params.id },
-  })
-    .then((deletedBlogData) => {
-      if (deletedBlogData === 0) {
-        return res.status(404).json({ error: 'Blog not found' });
-      }
-      res.json({ data: deletedBlogData });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ error: 'Something went wrong' });
+router.get('/edit/:id', withAuth, async (req, res) => {
+  try {
+    const blogPostData = await BlogPost.findByPk(req.params.id);
+
+    // Serialize data for handlebars template
+    const blog = blogPostData.get({ plain: true });
+
+    res.render('editblogpost', {
+      ...blog,
+      logged_in: req.session.logged_in
     });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// Updates book based on its isbn
+router.put('/edit/:id', withAuth, async (req, res) => {
+  // Calls the update method on the Blog Post model
+  try{
+    const blogPostData = await BlogPost.update(
+        {
+          // All the fields you can update and the data attached to the request body.
+          blog_title: req.body.blog_title,
+          blog_content: req.body.blog_content,
+        },
+        {
+          // Gets the post based on the blog post id given in the request parameters
+          where: {
+            id: req.params.id,
+          },
+        }
+    );
+    
+    if (!blogPostData) {
+        res.status(404).json({ message: 'No blog post found with this id!' });
+        return;
+    }
+    
+    res.status(200).json(blogPostData);
+  }  catch (err) {
+      res.status(500).json(err);
+  }
+});
+
+router.delete('/edit/:id', withAuth, async (req, res) => {
+  try {
+    const blogPostData = await BlogPost.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    if (!blogPostData) {
+      res.status(404).json({ message: 'No blog post found with this id!' });
+      return;
+    }
+
+    res.status(200).json(blogPostData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;

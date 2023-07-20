@@ -1,0 +1,17 @@
+[
+    {
+      "blog_title": "The Magic of Hogwarts: Unveiling the Wonders",
+      "blog_content": "Discover the enchanting world of Hogwarts School of Witchcraft and Wizardry, where young witches and wizards learn the art of magic and unravel the mysteries of the Sorting Hat, Quidditch, and more.",
+      "author_id": 1
+    },
+    {
+      "blog_title": "Defeating the Dark Lord: The Harry Potter Journey",
+      "blog_content": "Relive the thrilling adventures of Harry Potter as he faces the dark wizard, Lord Voldemort, in epic battles and heartwarming moments of friendship, bravery, and sacrifice.",
+      "author_id": 2
+    },
+    {
+      "blog_title": "Potions and Spells: A Look into Wizarding Alchemy",
+      "blog_content": "Dive into the fascinating world of magical potions and spells. From Felix Felicis to the Patronus Charm, explore the science and artistry behind the wizarding alchemy.",
+      "author_id": 3
+    }
+]

@@ -1,0 +1,17 @@
+[
+    {
+      "comment_content": "I'm enchanted by the magical world of Hogwarts! Your blog post truly captured the wonders of the school and its extraordinary students. Thank you for the enchanting read!",
+      "blog_id": 1,
+      "author_id": 2
+    },
+    {
+      "comment_content": "Your blog post on defeating the Dark Lord gave me chills! Harry Potter's journey is a timeless tale of courage and friendship. Well written!",
+      "blog_id": 2,
+      "author_id": 3
+    },
+    {
+      "comment_content": "While your blog explored some classic wizarding potions and spells, don't forget to mention the lesser-known ones like Amortentia or Sectumsempra! Nevertheless, an intriguing read!",
+      "blog_id": 3,
+      "author_id": 1
+    }
+]

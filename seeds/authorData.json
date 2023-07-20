@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Hermione Granger",
+        "email": "hgranger@example.com",
+        "password": "password2468"
+    },
+    {
+        "name": "Harry Potter",
+        "email": "hpotter@example.com",
+        "password": "password2468"
+    },
+    {
+        "name": "Ron Weasley",
+        "email": "rweasley@example.com",
+        "password": "password2468"
+    },
+    {
+        "name": "Albus Dumbledore",
+        "email": "adumbledore@example.com",
+        "password": "password2468"
+    }
+]
