@@ -53,7 +53,7 @@ router.get('/edit/:id', withAuth, async (req, res) => {
   }
 });
 
-// Updates book based on its isbn
+
 router.put('/edit/:id', withAuth, async (req, res) => {
   // Calls the update method on the Blog Post model
   try{
