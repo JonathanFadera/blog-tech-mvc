@@ -2,10 +2,8 @@ const router = require('express').Router();
 const { BlogPost, Author, Comment } = require('../models');
 const withAuth = require('../utils/auth');
 
-
 router.get('/', async (req, res) => {
   try {
-    // Get all blog posts and JOIN with author data
     const blogPostData = await BlogPost.findAll({
       include: [
         {
@@ -15,13 +13,11 @@ router.get('/', async (req, res) => {
       ],
     });
 
-    // Serialize data so the template can read it
     const blogposts = blogPostData.map((blog) => blog.get({ plain: true }));
 
-    // Pass serialized data and session flag into template
-    res.render('homepage', { 
-      blogposts, 
-      logged_in: req.session.logged_in 
+    res.render('homepage', {
+      blogposts,
+      logged_in: req.session.logged_in,
     });
   } catch (err) {
     res.status(500).json(err);
@@ -43,29 +39,29 @@ router.get('/blog/:id', async (req, res) => {
             {
               model: Author,
               attributes: ['name'],
-            }
-          ]
+            },
+          ],
         },
       ],
     });
-    
-    // Serialize data for handlebars template
+
     const blog = blogPostData.get({ plain: true });
 
+    // Debug logs
+    console.log('Reached the /blog/:id route');
+    console.log('blog:', blog);
 
     res.render('blogpost', {
       ...blog,
-      logged_in: req.session.logged_in
+      logged_in: req.session.logged_in,
     });
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-// Use withAuth middleware to prevent access to route
 router.get('/dashboard', withAuth, async (req, res) => {
   try {
-    // Find the logged in user based on the session ID
     const authorData = await Author.findByPk(req.session.user_id, {
       attributes: { exclude: ['password'] },
       include: [{ model: BlogPost }],
@@ -75,7 +71,7 @@ router.get('/dashboard', withAuth, async (req, res) => {
 
     res.render('dashboard', {
       ...author,
-      logged_in: true
+      logged_in: true,
     });
   } catch (err) {
     res.status(500).json(err);
@@ -83,7 +79,6 @@ router.get('/dashboard', withAuth, async (req, res) => {
 });
 
 router.get('/login', (req, res) => {
-  // If the user is already logged in, redirect the request to another route
   if (req.session.logged_in) {
     res.redirect('/dashboard');
     return;
@@ -92,7 +87,6 @@ router.get('/login', (req, res) => {
 });
 
 router.get('/signup', (req, res) => {
-  // If the user is already logged in, redirect the request to another route
   if (req.session.logged_in) {
     res.redirect('/dashboard');
     return;
