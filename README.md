@@ -8,7 +8,7 @@ Welcome to my thriving tech blog, a dynamic platform designed for tech enthusias
 2. Features
 3. Mockup
 4. Usage
-5. Credits
+5. Technologies Used
 6. Access
 
 ## Overview
@@ -31,8 +31,14 @@ node server.js
 ```
 Once the server is up and running, dive into a wealth of interesting and educational tech content, thoughtfully curated to cater to your interests.
 
-## Credits
-This outstanding tech blog is the culmination of dedicated efforts and knowledge gained from our MVC trainings. We express our gratitude to our community and mentors for their support and guidance throughout the development process.
+## Technologies Used
+- [express-handlebars](https://www.npmjs.com/package/express-handlebars)
+- [MySQL2](https://www.npmjs.com/package/mysql2)
+- [Sequelize](https://www.npmjs.com/package/sequelize)
+- [dotenv](https://www.npmjs.com/package/dotenv)
+- [bycrpt](https://www.npmjs.com/package/bcrypt)
+- [express-session](https://www.npmjs.com/package/express-session)
+- [connect-session-sequelize](https://www.npmjs.com/package/connect-session-sequelize)
 
 ## Access
 Ready to explore? Visit my repository and immerse yourself in a world of tech wonders!
@@ -41,4 +47,4 @@ Ready to explore? Visit my repository and immerse yourself in a world of tech wo
 To experience the live version, head over to the deployed Heroku link and join the tech enthusiasts' community.
 [Click here for the Deployed Heroku Link.](https://blog-tech-mvc.herokuapp.com/)
 
-Join us on this exhilarating tech journey, and together, let's shape the future of technology!
+Join me on this exhilarating tech journey, and together, let's shape the future of technology!
