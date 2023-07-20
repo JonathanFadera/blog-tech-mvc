@@ -316,12 +316,12 @@ html {
     }
     
     a {
-    color: #1b89bc;
+    color: #000000;
     text-decoration: none;
     }
     
     a:hover {
-    color: #065b83;
+    color: #ffe92d;
     text-decoration: underline;
     }
     
@@ -776,19 +776,19 @@ html {
     }
     
     .text-primary {
-    color: #2d3e50 !important;
+    color: #ffe92d !important;
     }
     
     .text-info {
-    color: #1bbc9b !important;
+    color: #ffe92d !important;
     }
     
     .text-danger {
-    color: #e64c66 !important;
+    color: #ffe92d !important;
     }
     
     .text-default {
-    color: #aeaeae !important;
+    color: #000000 !important;
     }
     
     .text-light {
@@ -796,11 +796,11 @@ html {
     }
     
     .text-dark {
-    color: #1a1a1a !important;
+    color: #000000 !important;
     }
     
     .text-white {
-    color: #ffffff !important;
+    color: #ffe92d !important;
     }
     
     .text-black {
@@ -808,32 +808,32 @@ html {
     }
     
     .text-darkblue {
-    color: #193875;
+    color: #000000;
     }
     
     .text-link {
-    color: #1b89bc !important;
+    color: #0056b3 !important;
     }
     
     /* BACKGROUND UTILS */
     .bg-primary {
-    background-color: #0b3663 !important;
+    background-color: #000000 !important;
     }
     
     .bg-info {
-    background-color: #1bbc9b !important;
+    background-color: #ffe92d !important;
     }
     
     .bg-danger {
-    background-color: #e64c66 !important;
+    background-color: #000000 !important;
     }
     
     .bg-light {
-    background-color: #d9e9e8 !important;
+    background-color: #ffe92d !important;
     }
     
     .bg-dark {
-    background-color: #142340 !important;
+    background-color: #000000 !important;
     }
     
     .bg-white {
@@ -845,7 +845,7 @@ html {
     }
     
     .bg-link {
-    background-color: #1b89bc !important;
+    background-color: #000000 !important;
     }
     
     /* DISPLAY */
@@ -879,13 +879,13 @@ html {
     border-radius: 0.3rem;
     border: 1px solid transparent;
     outline: none;
-    color: #1a1a1a;
-    background-color: #aeaeae;
+    color: #000000;
+    background-color: #ffe92d;
     transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
     }
     
     .btn:hover {
-    background-color: #cecece;
+    background-color: #ffe92d;
     }
     
     .btn.btn-squared {
@@ -909,35 +909,35 @@ html {
     }
     
     .btn.btn-primary {
-    background-color: #2d3e50;
-    color: #d9e9e8;
+    background-color: #000000;
+    color: #ffffff;
     }
     
     .btn.btn-primary:hover {
-    background-color: #57779a;
+    background-color: #000000;
     }
     
     .btn.btn-danger {
-    background-color: #e64c66;
+    background-color: #000000;
     color: #ffffff;
     }
     
     .btn.btn-danger:hover {
-    background-color: #ee8294;
+    background-color: #000000;
     }
     
     .btn.btn-info {
-    background-color: #1bbc9b;
+    background-color: #000000;
     color: #ffffff;
     }
     
     .btn.btn-info:hover {
-    background-color: #31e1bd;
+    background-color: #000000;
     }
     
     .btn.btn-light {
     background-color: #d9e9e8;
-    color: #1a1a1a;
+    color: #000000;
     }
     
     .btn.btn-light:hover {
@@ -945,12 +945,12 @@ html {
     }
     
     .btn.btn-dark {
-    background-color: #1a1a1a;
+    background-color: #000000;
     color: #d9e9e8;
     }
     
     .btn.btn-dark:hover {
-    background-color: #5f5f5f;
+    background-color: #000000;
     }
     
     .btn.btn-white {
@@ -968,26 +968,26 @@ html {
     }
     
     .btn.btn-black:hover {
-    background-color: #666666;
+    background-color: #000000;
     }
     
     .btn.btn-link {
-    background-color: #1b89bc;
+    background-color: #000000;
     color: #ffffff;
     }
     
     .btn.btn-link:hover {
-    background-color: #31a9e1;
+    background-color: #000000;
     }
     
     .card {
-    border: 1px solid #1a1a1a;
+    border: 1px solid #000000;
     margin-bottom: 1rem;
     }
     
     .card .card-header {
     padding: 0.375rem;
-    background-color: #2d3e50;
+    background-color: #000000;
     color: #d9e9e8;
     }
     
@@ -1042,11 +1042,11 @@ html {
     form .form-input {
     width: 100%;
     padding: 0.75rem;
-    color: #1a1a1a;
+    color: #000000;
     background-color: #ffffff;
     margin: 0.625rem 0;
     font-size: 1.2rem;
-    border: 1px solid #484848;
+    border: 1px solid #000000;
     border-radius: 0.3rem;
     }
     
