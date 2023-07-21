@@ -4,12 +4,12 @@
 Welcome to my thriving tech blog, a dynamic platform designed for tech enthusiasts and learners to come together and engage in insightful discussions about the ever-evolving world of technology. Whether you're a seasoned pro or a curious newcomer, this blog caters to all, providing a seamless experience for users of all backgrounds.
 
 ## Table of Contents
-1. Overview
-2. Features
-3. Mockup
-4. Usage
-5. Technologies Used
-6. Access
+1. [Overview](#overview)
+2. [Features](#features)
+3. [Mockup](#mockup)
+4. [Usage](#usage)
+5. [Technologies](#technologies)
+6. [Access](#access)
 
 ## Overview
 This tech blog offers an inclusive space for individuals to explore a wide range of captivating topics in the tech industry. No account is necessary to browse and enjoy the enriching content. However, if you wish to actively participate, we invite you to create a personalized account. With an account, you can contribute by posting your own articles and engaging in meaningful discussions through comments.
@@ -31,7 +31,7 @@ node server.js
 ```
 Once the server is up and running, dive into a wealth of interesting and educational tech content, thoughtfully curated to cater to your interests.
 
-## Technologies Used
+## Technologies
 - [express-handlebars](https://www.npmjs.com/package/express-handlebars)
 - [MySQL2](https://www.npmjs.com/package/mysql2)
 - [Sequelize](https://www.npmjs.com/package/sequelize)
