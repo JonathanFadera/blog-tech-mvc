@@ -33,6 +33,8 @@ router.post('/:id/comment/', withAuth, async (req, res) => {
 
     res.status(200).json(newComment);
   } catch (err) {
+    // Log the error to the console for troubleshooting purposes.
+    console.error('Error creating comment:', err);
     res.status(400).json(err);
   }
 });
